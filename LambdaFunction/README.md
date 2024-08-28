@@ -1,12 +1,17 @@
 # LambdaFunction
 
-Required 
-Java 11
-Maven 3.9
+## Prerequisites
 
-Inorder to test LammbdaFunction
+Before you begin, ensure you have the following installed on your machine:
 
-Step 1: Spin up Localstack and SQL using docker composer file
-Step 2: create s3 bucket and configure event notification using terraform file
-Step 3: Uncomment LocalRunner.class
-Step 4 : Run LocalRunner.class having following in runconfig
+- **Java**: Version 11
+- **Maven**: Version 3.9
+
+
+## Installation
+
+1. **Clone the repository**:
+
+   ```bash
+   git clone https://github.com/jdharanms/DockerAssignment.git
+   cd DockerAssignment
