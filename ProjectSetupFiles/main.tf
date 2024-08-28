@@ -12,7 +12,7 @@ provider "aws" {
 }
 
 resource "aws_s3_bucket" "bucket" {
-  bucket = "my-test-bucket"
+  bucket = "s3-lambda-test"
 }
 
 resource "aws_lambda_function" "process_s3_event" {
@@ -20,23 +20,17 @@ resource "aws_lambda_function" "process_s3_event" {
   handler       = "com.example.LambdaHandler::handleRequest"
   runtime       = "java11"
   memory_size   = 512
+  filename      = "${path.module}/lambdaFunction-1.0-SNAPSHOT.zip"
+  source_code_hash = filebase64sha256("${path.module}/lambdaFunction-1.0-SNAPSHOT.zip")
 
-  # Correct path to the local ZIP file
-  filename      = "${path.module}/lamdaFunction-1.0-SNAPSHOT.zip"
-  source_code_hash = filebase64sha256("${path.module}/lamdaFunction-1.0-SNAPSHOT.zip")
-
-  # Define the IAM role ARN here
   role = "arn:aws:iam::000000000000:role/lambda-role"
 
   environment {
     variables = {
       BUCKET_NAME   = aws_s3_bucket.bucket.bucket
-      SQL_HOST      = "sqlserver"
-      SQL_USER      = "sa"
-      SQL_PASSWORD  = "YourStrong@Passw0rd"
       SQL_DATABASE  = "json_database"
       SQL_SERVER_HOST = "host.docker.internal"
-      SQL_SERVER_PASS = "YourStrong@Passw0rd"
+      SQL_SERVER_PASS = "Passw0rd"
       SQL_SERVER_USER = "sa"
     }
   }

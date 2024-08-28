@@ -6,10 +6,10 @@ services:
     ports:
       - "3306:3306"
     environment:
-      MYSQL_ROOT_PASSWORD: "YourStrong@Passw0rd"
+      MYSQL_ROOT_PASSWORD: "Passw0rd"
       MYSQL_DATABASE: "json_database"
       MYSQL_USER: "sa"
-      MYSQL_PASSWORD: "YourStrong@Passw0rd"
+      MYSQL_PASSWORD: "Passw0rd"
     volumes:
       - "./mysql_DDL:/docker-entrypoint-initdb.d/:rwx"
     networks:
@@ -19,13 +19,13 @@ services:
     image: localstack/localstack:latest
     container_name: localstack
     environment:
-      - SERVICES=s3,lambda,ec2,sqs # Enable the AWS services you need
-      - DEBUG=1                    # Enable debugging
-      - DATA_DIR=/tmp/localstack/data # Persist data between restarts
-      - DEFAULT_REGION=us-east-1   # Set default AWS region
-      - LAMBDA_EXECUTOR=docker-reuse # Use Docker for Lambda execution
+      - SERVICES=s3,lambda,ec2,sqs
+      - DEBUG=1
+      - DATA_DIR=/tmp/localstack/data
+      - DEFAULT_REGION=us-east-1
+      - LAMBDA_EXECUTOR=docker-reuse
     ports:
-      - "4566:4566"                # LocalStack edge port for all services
+      - "4566:4566"
     volumes:
       - "./localstack-data:/var/lib/localstack"
       - "/var/run/docker.sock:/var/run/docker.sock"

@@ -28,7 +28,6 @@ public class LambdaHandler implements RequestHandler<S3Event, String> {
     private static final String SQL_SERVER_USER = System.getenv("SQL_SERVER_USER");
     private static final String SQL_SERVER_PASS = System.getenv("SQL_SERVER_PASS");
     private static final String SQL_SERVER_URL = "jdbc:mysql://" + SQL_SERVER_HOST + ":3306/json_database?allowPublicKeyRetrieval=true&useSSL=false";
-//    private static final String SQL_SERVER_URL = "jdbc:mysql://host.docker.internal:3306/json_database?allowPublicKeyRetrieval=true&useSSL=false";
 
     @Override
     public String handleRequest(S3Event event, Context context) {
