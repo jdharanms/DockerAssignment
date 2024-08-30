@@ -12,8 +12,10 @@ services:
       MYSQL_PASSWORD: "Passw0rd"
     volumes:
       - "./mysql_DDL:/docker-entrypoint-initdb.d/:rwx"
+    dns:
+      - 10.0.2.20
     networks:
-      - localstack_network 
+      - localstack
 
   localstack:
     image: localstack/localstack:latest
@@ -30,8 +32,31 @@ services:
       - "./localstack-data:/var/lib/localstack"
       - "/var/run/docker.sock:/var/run/docker.sock"
     networks:
-      - localstack_network
+      localstack:
+        ipv4_address: 10.0.2.20
+
+  terraform:
+    image: hashicorp/terraform:latest
+    container_name: terraform
+    volumes:
+      - "./:/workspace"
+    working_dir: /workspace
+    entrypoint: [ "/bin/sh", "-c" ]
+    command: >
+      "terraform init &&
+       terraform apply -auto-approve"
+    depends_on:
+      - localstack
+      - mysql
+    dns:
+      - 10.0.2.20
+      - 8.8.8.8
+      - 1.1.1.1
+    networks:
+      - localstack
 
 networks:
-  localstack_network:
-    driver: bridge
+  localstack:
+    ipam:
+      config:
+        - subnet: 10.0.2.0/24

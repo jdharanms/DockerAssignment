@@ -6,13 +6,21 @@ provider "aws" {
   access_key                  = "test"
   secret_key                  = "test"
   endpoints {
-    s3     = "http://s3.us-east-1.localhost.localstack.cloud:4566"
-    lambda = "http://localhost:4566"
+     s3  =  "http://s3.us-east-1.localhost.localstack.cloud:4566"
+    lambda = "http://localstack:4566"
   }
 }
 
 resource "aws_s3_bucket" "bucket" {
   bucket = "s3-lambda-test"
+
+  lifecycle {
+      create_before_destroy = true
+    }
+
+    timeouts {
+      create = "5m"  # Increase the timeout period here
+    }
 }
 
 resource "aws_lambda_function" "process_s3_event" {
@@ -57,3 +65,11 @@ resource "aws_lambda_permission" "allow_s3" {
   source_arn    = aws_s3_bucket.bucket.arn
 }
 
+resource "aws_s3_bucket_object" "example" {
+  bucket = aws_s3_bucket.bucket.id
+  key    = "testDataFile.json"
+  source = "testDataFile.json"  # Path to the file on your local machine
+  depends_on = [
+      aws_s3_bucket_notification.bucket_notification
+    ]
+}
