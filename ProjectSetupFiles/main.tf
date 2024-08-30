@@ -67,8 +67,8 @@ resource "aws_lambda_permission" "allow_s3" {
 
 resource "aws_s3_bucket_object" "example" {
   bucket = aws_s3_bucket.bucket.id
-  key    = "testDataFile.json"
-  source = "testDataFile.json"  # Path to the file on your local machine
+  key    = "sampleTestData.json"
+  source = "sampleTestData.json"  # Path to the file on your local machine
   depends_on = [
       aws_s3_bucket_notification.bucket_notification
     ]
